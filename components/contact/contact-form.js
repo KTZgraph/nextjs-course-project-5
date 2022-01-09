@@ -1,23 +1,67 @@
+import { useState } from "react";
 import classes from "./contact-form.module.css";
 
 function ContactForm() {
+  // można useRef do danych z inputa a można i state jak tutaj, alternatywnie jeden state który jest obiektem i który ma trzy pola
+  // two way binding
+  const [enteredEmail, setEnteredEmail] = useState("");
+  const [enteredName, setEnteredName] = useState("");
+  const [enteredMessage, setEnteredMessage] = useState("");
+
+  function sendMessageHandler(event) {
+    event.preventDefault();
+
+    //add client-side validation żeby user miał ładną zwrotnkę jak coś źle zrobi
+
+    fetch("/api/contact", {
+      method: "POST",
+      body: JSON.stringify({
+        // obiekt do API, uważać na nazwy kluczy
+        email: enteredEmail,
+        name: enteredName,
+        message: enteredMessage,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
   return (
     <section className={classes.contact}>
       <h1>How can I help you</h1>
-      <form className={classes.from}>
+      <form className={classes.form} onSubmit={sendMessageHandler}>
         <div className={classes.controls}>
           <div className={classes.control}>
             <label htmlFor="email">Your Email</label>
-            <input type="email" id="email" required />
+            <input
+              type="email"
+              id="email"
+              required
+              value={enteredEmail}
+              onChange={(event) => setEnteredEmail(event.target.value)}
+            />
           </div>
           <div className={classes.control}>
             <label htmlFor="name">Your Name</label>
-            <input type="text" id="name" required />
+            <input
+              type="text"
+              id="name"
+              required
+              value={enteredName}
+              onChange={(event) => setEnteredName(event.target.value)}
+            />
           </div>
         </div>
         <div className={classes.control}>
           <label htmlFor="message">Your Message</label>
-          <textarea id="message" row="5"></textarea>
+          <textarea
+            id="message"
+            row="5"
+            required
+            value={enteredMessage}
+            onChange={(event) => setEnteredMessage(event.target.value)}
+          ></textarea>
         </div>
         <div className={classes.actions}>
           <button>Send Message</button>
