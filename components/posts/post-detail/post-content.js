@@ -70,6 +70,7 @@ function PostConentent(props) {
       <PostHeader title={post.title} image={imagePath} />
 
       {/* z markdowna do (html) jsx */}
+      {/* TUUUUUUUUUUUUUUUUUUU <ReactMarkdown components */}
       <ReactMarkdown components={customRenderers}>{post.content}</ReactMarkdown>
     </article>
   );
