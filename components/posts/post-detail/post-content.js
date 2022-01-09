@@ -1,4 +1,6 @@
 //markdown krótszy od html ale może zostać w niego zmieniony(HTML) albo w JSX z jakąs dodatkową bilbioteką
+import ReactMarkdown from 'react-markdown';
+
 import PostHeader from "./post-header";
 import classes from './post-content.module.css';
 
@@ -16,8 +18,8 @@ function PostConentent() {
     <article className={classes.content}>
       <PostHeader title={DUMMY_POST.title} image={imagePath} />
 
-      {/* to będzie z markdowna do jsx */}
-      {DUMMY_POST.content}
+      {/* z markdowna do (html) jsx */}
+      <ReactMarkdown>{DUMMY_POST.content}</ReactMarkdown>
     </article>
   );
 }
