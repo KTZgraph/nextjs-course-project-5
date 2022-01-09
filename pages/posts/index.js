@@ -1,38 +1,20 @@
 import AllPosts from "../../components/posts/all-posts";
+import { getAllPosts } from "../../lib/posts-util";
 
-const DUMMY_POST = [
-    {
-      slug: "getting-started-with-nextjs1",
-      title: "Getting started with Nextjs",
-      image: "getting-started-nextjs.png",
-      excerpt: "Nextjs is a React framework for production",
-      date: "2022-02-10",
-    },
-    {
-      slug: "getting-started-with-nextjs2",
-      title: "Getting started with Nextjs",
-      image: "getting-started-nextjs.png",
-      excerpt: "Nextjs is a React framework for production",
-      date: "2022-02-10",
-    },
-    {
-      slug: "getting-started-with-nextjs3",
-      title: "Getting started with Nextjs",
-      image: "getting-started-nextjs.png",
-      excerpt: "Nextjs is a React framework for production",
-      date: "2022-02-10",
-    },
-    {
-      slug: "getting-started-with-nextjs4",
-      title: "Getting started with Nextjs",
-      image: "getting-started-nextjs.png",
-      excerpt: "Nextjs is a React framework for production",
-      date: "2022-02-10",
-    },
-  ];
+function AllPostsPage(props) {
+  return <AllPosts posts={props.posts} />;
+}
 
-function AllPostsPage() {
-    return <AllPosts posts={DUMMY_POST}/>
+export function getStaticProps() {
+  // getServerSideProps nie ma sensu bo nie chcemy pobierać ciagle dla pojedynczego posta danych
+  //jak coś się zmieni - post to trzeb od nowa budować dałą aplikację, dla małego blogu nie jest to uciążliwe
+  const allPosts = getAllPosts();
+  return {
+    props: {
+      posts: allPosts,
+    },
+    // revalidate: 180  // ale tu się nic w danych nie zmieni i tak trzeba redeploy
+  };
 }
 
 export default AllPostsPage;

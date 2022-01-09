@@ -1,7 +1,7 @@
 ---
 # tutaj są jakieś metadane miedzy trzeba --- i --- musza być w formacie yaml
 #image  musi sie zgadzac z plikiem z folderu
-title: 'Getting Started With Nextjs1'
+title: 'Getting Started With Nextjs'
 date: '2020-10-16'
 author: 'Można dodać jak jest więcej autorów'
 image: getting-started-nextjs.png
