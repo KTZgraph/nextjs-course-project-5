@@ -2,10 +2,12 @@
 // tu powinno też być logo dla bloga
 import Link from "next/link";
 
+import Logo from './logo'
+import classes from './main-navigation.module.css'
 
 function MainNavigation() {
   return (
-    <header>
+    <header className={classes.header}>
       <Link href="/">
         {/* jak w Linku dziecko nie jeset zwykły tekstem to nie generuje tagu a - trzeba samemu dodac <a> */}
         <a> {/* nie trzeba do a dodawać teraz href, fajnie bo wszsytko można w linka przekształcić*/}
