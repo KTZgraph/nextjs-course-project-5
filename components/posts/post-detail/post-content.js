@@ -1,6 +1,8 @@
 //markdown krótszy od html ale może zostać w niego zmieniony(HTML) albo w JSX z jakąs dodatkową bilbioteką
 import ReactMarkdown from "react-markdown";
 import Image from "next/image";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { atomDark } from "react-syntax-highlighter/dist/cjs/styles/prism"; //cjs nie esm bo ma być na serwerze
 
 import PostHeader from "./post-header";
 import classes from "./post-content.module.css";
@@ -9,7 +11,6 @@ function PostConentent(props) {
   const { post } = props;
 
   const imagePath = `/images/posts/${post.slug}/${post.image}`;
-
 
   //mówic markdownowi jak ma nadpisać defaultowe  ustawienia - sprawa ładnego wyświetlania obrazka
   const customRenderers = {
@@ -36,9 +37,9 @@ function PostConentent(props) {
         return (
           <div className={classes.image}>
             <Image
-              src={`images/posts/${post.slug}/${image.properties.src}`}
+              src={`/images/posts/${post.slug}/${image.properties.src}`}
               // alt={image.alt}
-              alt={`images/posts/${post.slug}/${image.properties.src}`}
+              alt={`/images/posts/${post.slug}/${image.properties.src}`}
               width={600}
               height={300}
             />
@@ -49,6 +50,19 @@ function PostConentent(props) {
       // jak nie ma to zwracam zwykły paragraf
       return <p>{paragraph.children}</p>;
     },
+
+    //stylizacja kodu z markdowna
+    code(code) {
+      const { className, children } = code;
+      const language = className.split("-")[1]; // className is something like language-js => We need the "js" part here
+      return (
+        <SyntaxHighlighter
+          style={atomDark}
+          language={language}
+          children={children}
+        />
+      );
+    },
   };
 
   return (
@@ -56,7 +70,7 @@ function PostConentent(props) {
       <PostHeader title={post.title} image={imagePath} />
 
       {/* z markdowna do (html) jsx */}
-      <ReactMarkdown renderers={customRenderers}>{post.content}</ReactMarkdown>
+      <ReactMarkdown components={customRenderers}>{post.content}</ReactMarkdown>
     </article>
   );
 }
