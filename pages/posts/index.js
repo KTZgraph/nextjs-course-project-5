@@ -5,7 +5,7 @@ function AllPostsPage(props) {
   return <AllPosts posts={props.posts} />;
 }
 
-export function getStaticProps() {
+export function getStaticProps() { //nieasynchronicza bo synchornicze czytam pliki
   // getServerSideProps nie ma sensu bo nie chcemy pobierać ciagle dla pojedynczego posta danych
   //jak coś się zmieni - post to trzeb od nowa budować dałą aplikację, dla małego blogu nie jest to uciążliwe
   const allPosts = getAllPosts();
