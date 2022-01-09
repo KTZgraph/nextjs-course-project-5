@@ -1,4 +1,8 @@
-// slug to unikalne id ale human readble np /posts/jakis-tytul-unikalny-posta
-function SigleDetailPage() {}
+import PostConentent from "../../components/posts/post-detail/post-content";
 
-export default SigleDetailPage;
+// slug to unikalne id ale human readble np /posts/jakis-tytul-unikalny-posta
+function PostDetailPage() {
+    return <PostConentent/>
+}
+
+export default PostDetailPage;
