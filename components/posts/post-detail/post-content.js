@@ -1,11 +1,18 @@
 //markdown krótszy od html ale może zostać w niego zmieniony(HTML) albo w JSX z jakąs dodatkową bilbioteką
 import ReactMarkdown from "react-markdown";
 import Image from "next/image";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/cjs/styles/prism"; //cjs nie esm bo ma być na serwerze
+// lżejsze jest importowanie supportu dla konkrentych języków ale trzeba je zarejestrować 
+//then we will have much lighter footprint
+import js from 'react-syntax-highlighter/dist/cjs/languages/prism/javascript';
+import css from 'react-syntax-highlighter/dist/cjs/languages/prism/css';
 
 import PostHeader from "./post-header";
 import classes from "./post-content.module.css";
+
+SyntaxHighlighter.registerLanguage('js', js);
+SyntaxHighlighter.registerLanguage('css', css);
 
 function PostConentent(props) {
   const { post } = props;
@@ -59,8 +66,8 @@ function PostConentent(props) {
         <SyntaxHighlighter
           style={atomDark}
           language={language}
-          children={children}
-        />
+          // children={children}
+        >{children}</SyntaxHighlighter>
       );
     },
   };
