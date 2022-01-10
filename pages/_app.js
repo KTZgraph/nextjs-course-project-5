@@ -7,7 +7,8 @@ function MyApp({ Component, pageProps }) {
   return (
     <Layout>
       <Head>
-        <meta namew="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
       </Head>
 
       {/* teraz poniższy komponent bedzie użyty jako child w komponencie Layout */}
