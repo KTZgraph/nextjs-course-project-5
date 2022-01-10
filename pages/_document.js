@@ -11,6 +11,8 @@ class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
+            {/* potrzbene do ReactPPortals tutaj do notification pozwala dodać react hooka potrzebny React Portal, id dowolne */}
+            <div id="notifications"></div>
         </body>
       </Html>
     );
