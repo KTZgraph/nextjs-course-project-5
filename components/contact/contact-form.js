@@ -1,11 +1,10 @@
 import { useState } from "react";
 import classes from "./contact-form.module.css";
 import Notification from "../ui/notification";
-import { responseSymbol } from "next/dist/server/web/spec-compliant/fetch-event";
 
 //można dodać funckje do osobnego pliku
 async function sendContactData(contactDetails) {
-  await fetch("/api/contact", {
+  const response = await fetch("/api/contact", {
     method: "POST",
     body: JSON.stringify(contactDetails),
     headers: {
@@ -19,12 +18,14 @@ async function sendContactData(contactDetails) {
   }
 }
 
+// komponent tez możnaby rozbić na mniejsze
 function ContactForm() {
   // można useRef do danych z inputa a można i state jak tutaj, alternatywnie jeden state który jest obiektem i który ma trzy pola
   // two way binding
   const [enteredEmail, setEnteredEmail] = useState("");
   const [enteredName, setEnteredName] = useState("");
   const [enteredMessage, setEnteredMessage] = useState("");
+  const [requestError, setRequestError] = useState();
 
   //state do notyfikacji
   const [requestStatus, setRequestStatus] = useState(""); //'pendind', 'success' 'error'
@@ -46,10 +47,36 @@ function ContactForm() {
         message: enteredMessage,
       });
       //status po wysłaniu danych jeśli wszystko jest ok
-      setRequestStatus("pendind");
+      setRequestStatus("success");
     } catch (error) {
+      setRequestError(error.message); // potrzebuje message z errora w if (requestStatus === "error") dlatego potrzebny kolejny stan
       setRequestStatus("error");
     }
+  }
+
+  let notification; // domyslnie undefined
+  if (requestStatus === "pendind") {
+    notification = {
+      status: "pendind",
+      title: "Sending message",
+      message: "Your message is on its way",
+    };
+  }
+
+  if (requestStatus === "success") {
+    notification = {
+      status: "success",
+      title: "Success",
+      message: "Message send successfully",
+    };
+  }
+
+  if (requestStatus === "error") {
+    notification = {
+      status: "error",
+      title: "Error!",
+      message: requestError,
+    };
   }
 
   return (
@@ -92,6 +119,15 @@ function ContactForm() {
           <button>Send Message</button>
         </div>
       </form>
+
+      {/* status notyfikacja */}
+      {notification && (
+        <Notification
+          status={notification.status}
+          title={notification.title}
+          message={notification.message}
+        />
+      )}
     </section>
   );
 }
