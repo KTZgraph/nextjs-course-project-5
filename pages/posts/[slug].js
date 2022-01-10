@@ -1,9 +1,20 @@
+import Head from "next/head";
+import { Fragment } from "react";
+
 import PostConentent from "../../components/posts/post-detail/post-content";
 import { getPostData, getPostsFiles } from "../../lib/posts-util";
 
 // slug to unikalne id ale human readble np /posts/jakis-tytul-unikalny-posta
 function PostDetailPage(props) {
-  return <PostConentent post={props.post}/>;
+  return (
+    <Fragment>
+      <Head>
+        <title>{props.post.title}</title>
+        <meta name="description" content={props.post.excerpt} />
+      </Head>
+      <PostConentent post={props.post} />
+    </Fragment>
+  );
 }
 
 export function getStaticProps(context) {
@@ -25,7 +36,7 @@ export function getStaticProps(context) {
 export function getStaticPaths() {
   //nieasynchronicza bo synchornicze czytam pliki
   const postFilenames = getPostsFiles();
-  const slugs = postFilenames.map((fileName) => fileName.replace(/\.md$/,'')); // pozbycie się rozszerzenia z pliku
+  const slugs = postFilenames.map((fileName) => fileName.replace(/\.md$/, "")); // pozbycie się rozszerzenia z pliku
 
   return {
     //to teraz dane będą pobieran ai tworzone na żadanie
