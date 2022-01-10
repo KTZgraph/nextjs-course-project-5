@@ -1,5 +1,23 @@
 import { useState } from "react";
 import classes from "./contact-form.module.css";
+import Notification from "../ui/notification";
+import { responseSymbol } from "next/dist/server/web/spec-compliant/fetch-event";
+
+//można dodać funckje do osobnego pliku
+async function sendContactData(contactDetails) {
+  await fetch("/api/contact", {
+    method: "POST",
+    body: JSON.stringify(contactDetails),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message || "Somethin went wrong!");
+  }
+}
 
 function ContactForm() {
   // można useRef do danych z inputa a można i state jak tutaj, alternatywnie jeden state który jest obiektem i który ma trzy pola
@@ -8,23 +26,30 @@ function ContactForm() {
   const [enteredName, setEnteredName] = useState("");
   const [enteredMessage, setEnteredMessage] = useState("");
 
-  function sendMessageHandler(event) {
+  //state do notyfikacji
+  const [requestStatus, setRequestStatus] = useState(""); //'pendind', 'success' 'error'
+
+  async function sendMessageHandler(event) {
+    //asynchroniczna
+    //async - await mozna użyć
     event.preventDefault();
 
     //add client-side validation żeby user miał ładną zwrotnkę jak coś źle zrobi
 
-    fetch("/api/contact", {
-      method: "POST",
-      body: JSON.stringify({
-        // obiekt do API, uważać na nazwy kluczy
+    //status przed wysłaniem danych
+    setRequestStatus("pendind");
+
+    try {
+      await sendContactData({
         email: enteredEmail,
         name: enteredName,
         message: enteredMessage,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+      });
+      //status po wysłaniu danych jeśli wszystko jest ok
+      setRequestStatus("pendind");
+    } catch (error) {
+      setRequestStatus("error");
+    }
   }
 
   return (
