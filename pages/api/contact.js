@@ -30,10 +30,11 @@ async function handler(req, res) {
 
     // połaczenie z bazą powa lidacji danych
     let client;
+
+    //string pobiera dane z spliku root/next.config.js robi się podczas buildu, zmiana wartości -> nowy build
+    const connectionString = `mongodb+srv://${process.env.mongodb_username}:${process.env.mongodb_password}@${process.env.mongodb_clustername}.xcwvd.mongodb.net/${process.env.mongodb_database}?retryWrites=true&w=majority`;
     try {
-      client = await MongoClient.connect(
-        "string do bazy"
-      );
+      client = await MongoClient.connect(connectionString);
     } catch (error) {
       resizeTo.status(500).json({ message: "Could not connect to database!" });
       return;
@@ -52,8 +53,9 @@ async function handler(req, res) {
     // zamknać połączenie z baza w przypadku sukcesu też
     client.close();
 
-    console.log(newMessage);
-    res.status(201).json({ message: "Succesfuly stroed message!" , message: newMessage});
+    res
+      .status(201)
+      .json({ message: "Succesfuly stroed message!", message: newMessage });
   }
 }
 
