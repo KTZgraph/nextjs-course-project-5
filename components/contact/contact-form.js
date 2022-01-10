@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import classes from "./contact-form.module.css";
 import Notification from "../ui/notification";
 
@@ -25,10 +25,25 @@ function ContactForm() {
   const [enteredEmail, setEnteredEmail] = useState("");
   const [enteredName, setEnteredName] = useState("");
   const [enteredMessage, setEnteredMessage] = useState("");
-  const [requestError, setRequestError] = useState();
+  const [requestError, setRequestError] = useState(); // potrzebuje message z errora w if (requestStatus === "error") dlatego potrzebny kolejny stan
 
   //state do notyfikacji
   const [requestStatus, setRequestStatus] = useState(""); //'pendind', 'success' 'error'
+
+  //żeby zamknać notyfikacje
+  useEffect(() => {
+    // funckja się wykona za każdym razem gdy requestStatus się zmieni i TYLKO WTEDY
+    if(requestStatus === 'success' || requestStatus === 'error'){
+      //jak jest status 'pendind' to nic nie robię
+      const timer = setTimeout(() => {
+        setRequestStatus(null); //resetowanie timera
+        setRequestError(null); //resetowanie wiadomosci z komunikatem błedu
+      }, 3000);
+
+      //clienup function - czystczę timer dlatego zapisuję jego referencje w const timer, żeby wyczyszczyć timer jeśli istneije jakiś działajacy
+      return () => clearTimeout(timer);
+    } 
+  }, [requestStatus])
 
   async function sendMessageHandler(event) {
     //asynchroniczna
