@@ -33,7 +33,7 @@ function ContactForm() {
   //żeby zamknać notyfikacje
   useEffect(() => {
     // funckja się wykona za każdym razem gdy requestStatus się zmieni i TYLKO WTEDY
-    if(requestStatus === 'success' || requestStatus === 'error'){
+    if (requestStatus === "success" || requestStatus === "error") {
       //jak jest status 'pendind' to nic nie robię
       const timer = setTimeout(() => {
         setRequestStatus(null); //resetowanie timera
@@ -42,8 +42,8 @@ function ContactForm() {
 
       //clienup function - czystczę timer dlatego zapisuję jego referencje w const timer, żeby wyczyszczyć timer jeśli istneije jakiś działajacy
       return () => clearTimeout(timer);
-    } 
-  }, [requestStatus])
+    }
+  }, [requestStatus]);
 
   async function sendMessageHandler(event) {
     //asynchroniczna
@@ -63,6 +63,10 @@ function ContactForm() {
       });
       //status po wysłaniu danych jeśli wszystko jest ok
       setRequestStatus("success");
+      //czyszczenie inputów
+      setEnteredMessage("");
+      setEnteredEmail("");
+      setEnteredName("");
     } catch (error) {
       setRequestError(error.message); // potrzebuje message z errora w if (requestStatus === "error") dlatego potrzebny kolejny stan
       setRequestStatus("error");
